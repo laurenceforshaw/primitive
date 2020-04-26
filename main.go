@@ -78,7 +78,7 @@ func init() {
 	flag.IntVar(&Repeat, "rep", 0, "add N extra shapes per iteration with reduced search")
 	flag.BoolVar(&V, "v", false, "verbose")
 	flag.BoolVar(&VV, "vv", false, "very verbose")
-	flag.StringVar(&Shapes,"shapes","Shapes allowed to be used in the rendering,comma seperated, all if ablank")
+	flag.StringVar(&Shapes,"shapes","","Shapes allowed to be used in the rendering,comma seperated, all if ablank")
 }
 
 func errorMessage(message string) bool {
