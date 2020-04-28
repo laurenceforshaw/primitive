@@ -73,7 +73,7 @@ func init() {
 	flag.IntVar(&Alpha, "a", 128, "alpha value")
 	flag.IntVar(&InputSize, "r", 256, "resize large input images to this size")
 	flag.IntVar(&OutputSize, "s", 1024, "output image size")
-	flag.StringVar(&ModeStr, "m","1", "0=combo 1=triangle 2=rect 3=ellipse 4=circle 5=rotatedrect 6=beziers 7=rotatedellipse 8=polygon")
+	flag.StringVar(&ModeStr, "m","1", "0=combo 1=triangle 2=rect 3=ellipse 4=circle 5=rotatedrect 6=beziers 7=rotatedellipse 8=polygon comma sperate to combine specific modes")
 	flag.IntVar(&Workers, "j", 0, "number of parallel workers (default uses all cores)")
 	flag.IntVar(&Nth, "nth", 1, "save every Nth frame (put \"%d\" in path)")
 	flag.IntVar(&Repeat, "rep", 0, "add N extra shapes per iteration with reduced search")
@@ -114,6 +114,10 @@ func main() {
 		ModeArr[i] ,err = strconv.Atoi(v)
 		if(err != nil){
 			fmt.Printf("Mode must be a number or series of comma sperated numbers")
+			os.Exit(1)
+		}
+		if(len(ModeStrArr) > 1 &&(ModeArr[i] < 1 || ModeArr[i] > 8)){
+			fmt.Printf("Illegal mode: %d.", ModeArr[i])
 			os.Exit(1)
 		}
 	}
