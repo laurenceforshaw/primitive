@@ -107,10 +107,20 @@ func main() {
 	if len(Configs) == 0 {
 		ok = errorMessage("ERROR: number argument required")
 	}
-	Mode, err := strconv.Atoi(ModeStr)
-	if(err != nil){
-		fmt.Printf("Mode must be a number")
-		os.Exit(1)
+	ModeStrArr := strings.Split(ModeStr, ",")
+	ModeArr := make([]int,len(ModeStrArr))
+	for i,v := range(ModeStrArr){
+		var err error
+		ModeArr[i] ,err = strconv.Atoi(v)
+		if(err != nil){
+			fmt.Printf("Mode must be a number or series of comma sperated numbers")
+			os.Exit(1)
+		}
+	}
+	if(len(ModeArr) == 1){
+		Mode = ModeArr[0]
+	} else {
+		Mode = 0
 	}
 	if len(Configs) == 1 {
 		Configs[0].Mode = Mode
