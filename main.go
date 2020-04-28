@@ -25,7 +25,8 @@ var (
 	Alpha      int
 	InputSize  int
 	OutputSize int
-	Mode       int
+	Mode	   int
+	ModeStr    string
 	Workers    int
 	Nth        int
 	Repeat     int
@@ -72,7 +73,7 @@ func init() {
 	flag.IntVar(&Alpha, "a", 128, "alpha value")
 	flag.IntVar(&InputSize, "r", 256, "resize large input images to this size")
 	flag.IntVar(&OutputSize, "s", 1024, "output image size")
-	flag.IntVar(&Mode, "m", 1, "0=combo 1=triangle 2=rect 3=ellipse 4=circle 5=rotatedrect 6=beziers 7=rotatedellipse 8=polygon")
+	flag.StringVar(&ModeStr, "m","1", "0=combo 1=triangle 2=rect 3=ellipse 4=circle 5=rotatedrect 6=beziers 7=rotatedellipse 8=polygon")
 	flag.IntVar(&Workers, "j", 0, "number of parallel workers (default uses all cores)")
 	flag.IntVar(&Nth, "nth", 1, "save every Nth frame (put \"%d\" in path)")
 	flag.IntVar(&Repeat, "rep", 0, "add N extra shapes per iteration with reduced search")
@@ -105,6 +106,11 @@ func main() {
 	}
 	if len(Configs) == 0 {
 		ok = errorMessage("ERROR: number argument required")
+	}
+	Mode, err := strconv.Atoi(ModeStr)
+	if(err != nil){
+		fmt.Printf("Mode must be a number")
+		os.Exit(1)
 	}
 	if len(Configs) == 1 {
 		Configs[0].Mode = Mode
