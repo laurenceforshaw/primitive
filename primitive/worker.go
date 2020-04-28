@@ -108,7 +108,13 @@ func (worker *Worker) RandomState(t ShapeType, a int) *State {
 		return NewState(worker, NewRandomRotatedEllipse(worker), a)
 	case ShapeTypePolygon:
 		return NewState(worker, NewRandomPolygon(worker, 4, false), a)
+	case ShapeTypeUserDefined:
+		return NewState(worker, worker.NewRandomUserDefinedShape(),a)
 	}
+}
+
+func(worker *Worker) NewRandomUserDefinedShape() Shape {
+	return NewRandomTriangle(worker)
 }
 
 //Gets a mode from all modes or the allowed mode array
@@ -119,3 +125,5 @@ func(worker *Worker) RandomMode() int {
 		return worker.Rnd.Intn(8) + 1
 	}
 }
+
+

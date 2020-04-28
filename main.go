@@ -116,7 +116,7 @@ func main() {
 			fmt.Printf("Mode must be a number or series of comma sperated numbers")
 			os.Exit(1)
 		}
-		if(len(ModeStrArr) > 1 &&(ModeArr[i] < 1 || ModeArr[i] > 8)){
+		if(len(ModeStrArr) > 1 &&(ModeArr[i] < 1 || ModeArr[i] > 9)){
 			fmt.Printf("Illegal mode: %d.", ModeArr[i])
 			os.Exit(1)
 		}
