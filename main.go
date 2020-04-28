@@ -32,6 +32,7 @@ var (
 	Repeat     int
 	V, VV      bool
 	Shapes     string
+	UserShapeFile string
 )
 
 type flagArray []string
@@ -79,6 +80,7 @@ func init() {
 	flag.IntVar(&Repeat, "rep", 0, "add N extra shapes per iteration with reduced search")
 	flag.BoolVar(&V, "v", false, "verbose")
 	flag.BoolVar(&VV, "vv", false, "very verbose")
+	flag.StringVar(&UserShapeFile,"userShapeFile","UserShapes.txt","File to read user deifned shapes from.")
 }
 
 
@@ -107,6 +109,7 @@ func main() {
 	if len(Configs) == 0 {
 		ok = errorMessage("ERROR: number argument required")
 	}
+	useUserShapes := false
 	ModeStrArr := strings.Split(ModeStr, ",")
 	ModeArr := make([]int,len(ModeStrArr))
 	for i,v := range(ModeStrArr){
@@ -119,6 +122,9 @@ func main() {
 		if(len(ModeStrArr) > 1 &&(ModeArr[i] < 1 || ModeArr[i] > 9)){
 			fmt.Printf("Illegal mode: %d.", ModeArr[i])
 			os.Exit(1)
+		}
+		if(ModeArr[i] == 9){
+			useUserShapes = true
 		}
 	}
 	if(len(ModeArr) == 1){
@@ -169,6 +175,15 @@ func main() {
 	size := uint(InputSize)
 	if size > 0 {
 		input = resize.Thumbnail(size, size, input, resize.Bilinear)
+	}
+	//read user shape file
+	if(useUserShapes){
+		shapeFile,err := os.Open(UserShapeFile)
+		if(err != nil){
+			fmt.Printf("Error opening user shape file: %s",err.Error())
+		}
+		bob := shapeFile
+		bob = bob
 	}
 
 	//determine allowed shape colors
