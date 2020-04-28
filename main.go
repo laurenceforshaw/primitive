@@ -181,9 +181,9 @@ func main() {
 		shapeFile,err := os.Open(UserShapeFile)
 		if(err != nil){
 			fmt.Printf("Error opening user shape file: %s",err.Error())
+			os.Exit(1)
 		}
-		bob := shapeFile
-		bob = bob
+		primitive.ParseShapesFile(shapeFile)
 	}
 
 	//determine allowed shape colors
