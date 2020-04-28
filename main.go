@@ -78,16 +78,9 @@ func init() {
 	flag.IntVar(&Repeat, "rep", 0, "add N extra shapes per iteration with reduced search")
 	flag.BoolVar(&V, "v", false, "verbose")
 	flag.BoolVar(&VV, "vv", false, "very verbose")
-	flag.StringVar(&Shapes,"shapes","","Shapes allowed to be used in the rendering,comma seperated, all if blank")
 }
 
-var allowedShapes = [5] string{
-	"ellipse",
-	"polygon",
-	"quadratic",
-	"rectangle",
-	"triangle",
-}
+
 
 func errorMessage(message string) bool {
 	fmt.Fprintln(os.Stderr, message)
@@ -173,25 +166,6 @@ func main() {
 		bg = primitive.MakeColor(primitive.AverageImageColor(input))
 	} else {
 		bg = primitive.MakeHexColor(Background)
-	}
-	var sha  []string
-	if(Shapes != ""){
-		sha = strings.Split(Shapes,",")
-		for i,v := range(sha) {
-			var bob = i
-			bob = bob
-			var pass = false
-			for j, w := range (allowedShapes) {
-				bob = j
-				if (v == w) {
-					pass = true
-				}
-			}
-			if (!pass) {
-				fmt.Printf("No shape \"%s\"", v)
-				os.Exit(1)
-			}
-		}
 	}
 
 	// run algorithm
