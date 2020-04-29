@@ -23,7 +23,6 @@ func(fact *FlexPolyFactory) NewShape(worker *Worker) Shape{
 }
 
 //This pares a user shapes file
-//TODO: return the shapes as a set of factories
 func ParseShapesFile(reader io.Reader) []ShapeFactory{
 	scanner := bufio.NewScanner(reader)
 	var res []ShapeFactory
@@ -56,7 +55,7 @@ func ParseShapesFile(reader io.Reader) []ShapeFactory{
 	return res
 }
 
-
+//parse a flexible polygon creator from a seperated line
 func ParseFlexPoly(sp []string) ShapeFactory{
 
 	if(len(sp) != 2){

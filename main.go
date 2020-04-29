@@ -177,13 +177,14 @@ func main() {
 		input = resize.Thumbnail(size, size, input, resize.Bilinear)
 	}
 	//read user shape file
+	var userSh []primitive.ShapeFactory
 	if(useUserShapes){
 		shapeFile,err := os.Open(UserShapeFile)
 		if(err != nil){
 			fmt.Printf("Error opening user shape file: %s",err.Error())
 			os.Exit(1)
 		}
-		primitive.ParseShapesFile(shapeFile)
+		userSh = primitive.ParseShapesFile(shapeFile)
 	}
 
 	//determine allowed shape colors
@@ -204,7 +205,7 @@ func main() {
 	}
 
 	// run algorithm
-	model := primitive.NewModel(input, bg, sc, OutputSize, Workers, ModeArr)
+	model := primitive.NewModel(input, bg, sc, userSh, OutputSize, Workers, ModeArr)
 	primitive.Log(1, "%d: t=%.3f, score=%.6f\n", 0, 0.0, model.Score)
 	start := time.Now()
 	frame := 0
