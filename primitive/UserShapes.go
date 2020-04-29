@@ -9,11 +9,24 @@ import (
 	"strings"
 )
 
+type ShapeFactory interface {
+	NewShape(worker *Worker)  Shape
+}
+
+type FlexPolyFactory struct{
+	n int
+}
+
+
+func(fact *FlexPolyFactory) NewShape(worker *Worker) Shape{
+	return NewRandomPolygon(worker,fact.n,false)
+}
 
 //This pares a user shapes file
 //TODO: return the shapes as a set of factories
-func ParseShapesFile(reader io.Reader){
+func ParseShapesFile(reader io.Reader) []ShapeFactory{
 	scanner := bufio.NewScanner(reader)
+	var res []ShapeFactory
 	cont := true
 	for cont{
 		success := scanner.Scan()
@@ -24,7 +37,7 @@ func ParseShapesFile(reader io.Reader){
 				fmt.Printf("Error reading user shape file: Illegal shape name :%v",sp[0])
 				os.Exit(1)
 			case "FlexPoly":
-				ParseFlexPoly(sp)
+				res = append(res,ParseFlexPoly(sp))
 			}
 		} else {
 			err := scanner.Err()
@@ -36,11 +49,15 @@ func ParseShapesFile(reader io.Reader){
 			}
 		}
 	}
-
+	if(len(res) == 0){
+		fmt.Printf("Error reading user shape file: at least one shape must be specified")
+		os.Exit(1)
+	}
+	return res
 }
 
 
-func ParseFlexPoly(sp []string) {
+func ParseFlexPoly(sp []string) ShapeFactory{
 
 	if(len(sp) != 2){
 		fmt.Printf("Error reading user shape file: FlexPoly requires 2 arguments")
@@ -55,5 +72,7 @@ func ParseFlexPoly(sp []string) {
 		fmt.Printf("Error reading user shape file: A polygon must have at least 3 sides.")
 		os.Exit(1)
 	}
+	ret := FlexPolyFactory{s}
+	return &ret
 
 }
