@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fogleman/primitive/primitive"
+	"github.com/laurenceforshaw/primitive/primitive"
 	"github.com/nfnt/resize"
 )
 
@@ -20,6 +20,7 @@ var (
 	Input      string
 	Outputs    flagArray
 	Background string
+	ShapeColorsStr string
 	Configs    shapeConfigArray
 	Alpha      int
 	InputSize  int
@@ -66,6 +67,7 @@ func init() {
 	flag.Var(&Outputs, "o", "output image path")
 	flag.Var(&Configs, "n", "number of primitives")
 	flag.StringVar(&Background, "bg", "", "background color (hex)")
+	flag.StringVar(&ShapeColorsStr, "col", "", "colors to use in shapes(comma seperated hex)")
 	flag.IntVar(&Alpha, "a", 128, "alpha value")
 	flag.IntVar(&InputSize, "r", 256, "resize large input images to this size")
 	flag.IntVar(&OutputSize, "s", 1024, "output image size")
@@ -111,11 +113,13 @@ func main() {
 			ok = errorMessage("ERROR: number argument must be > 0")
 		}
 	}
+
 	if !ok {
 		fmt.Println("Usage: primitive [OPTIONS] -i input -o output -n count")
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
+
 
 	// set log level
 	if V {
@@ -145,6 +149,14 @@ func main() {
 	}
 
 	// determine background color
+	var sc  []primitive.Color
+	if ShapeColorsStr != "" {
+		var ShapeColorsStrAr = strings.Split(ShapeColorsStr, ",")
+		sc = make([]primitive.Color, len(ShapeColorsStrAr))
+		for i, v := range ShapeColorsStrAr {
+			sc[i] = primitive.MakeHexColor(v)
+		}
+	}
 	var bg primitive.Color
 	if Background == "" {
 		bg = primitive.MakeColor(primitive.AverageImageColor(input))
@@ -153,7 +165,7 @@ func main() {
 	}
 
 	// run algorithm
-	model := primitive.NewModel(input, bg, OutputSize, Workers)
+	model := primitive.NewModel(input, bg, sc, OutputSize, Workers)
 	primitive.Log(1, "%d: t=%.3f, score=%.6f\n", 0, 0.0, model.Score)
 	start := time.Now()
 	frame := 0
