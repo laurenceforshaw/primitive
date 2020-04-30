@@ -94,8 +94,8 @@ func NewRandomRigidPolygon(worker *Worker, parent *RigidPolygonFactory) *RigidPo
 //Get the vertex locations from the scale and angle
 func (p *RigidPolygon) Derive(){
 	for i := 0;i <p.Order;i++{
-		p.X[i] = p.RootX + math.Cos(p.Angle)*p.Parent.X[i] - math.Sin(p.Angle)*p.Parent.Y[i]
-		p.Y[i] = p.RootY + math.Cos(p.Angle)*p.Parent.Y[i] + math.Sin(p.Angle)*p.Parent.X[i]
+		p.X[i] = p.RootX + math.Cos(p.Angle)*p.Parent.X[i]*p.Scale - math.Sin(p.Angle)*p.Parent.Y[i]*p.Scale
+		p.Y[i] = p.RootY + math.Cos(p.Angle)*p.Parent.Y[i]*p.Scale + math.Sin(p.Angle)*p.Parent.X[i]*p.Scale
 	}
 }
 
@@ -130,24 +130,13 @@ func (p *RigidPolygon) Copy() Shape {
 }
 
 func (p *RigidPolygon) Mutate() {
-	const m = 16
-	w := p.Worker.W
-	h := p.Worker.H
+	//const m = 16
+	//w := p.Worker.W
+	//h := p.Worker.H
 	rnd := p.Worker.Rnd
-	for {
-		if rnd.Float64() < 0.25 {
-			i := rnd.Intn(p.Order)
-			j := rnd.Intn(p.Order)
-			p.X[i], p.Y[i], p.X[j], p.Y[j] = p.X[j], p.Y[j], p.X[i], p.Y[i]
-		} else {
-			i := rnd.Intn(p.Order)
-			p.X[i] = clamp(p.X[i]+rnd.NormFloat64()*16, -m, float64(w-1+m))
-			p.Y[i] = clamp(p.Y[i]+rnd.NormFloat64()*16, -m, float64(h-1+m))
-		}
-		if p.Valid() {
-			break
-		}
-	}
+	p.Scale = p.Scale + rnd.NormFloat64()*0.05*p.MaxScale
+	p.Angle = p.Angle + rnd.NormFloat64()*0.1
+	p.Derive()
 }
 
 func (p *RigidPolygon) Valid() bool {
