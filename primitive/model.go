@@ -21,9 +21,10 @@ type Model struct {
 	sc		   []Color
 	Scores     []float64
 	Workers    []*Worker
+	ModeArr    []int
 }
 
-func NewModel(target image.Image, background Color, sc []Color, size, numWorkers int) *Model {
+func NewModel(target image.Image, background Color, sc []Color, size, numWorkers int, ModeArr []int) *Model {
 	w := target.Bounds().Size().X
 	h := target.Bounds().Size().Y
 	aspect := float64(w) / float64(h)
@@ -49,8 +50,9 @@ func NewModel(target image.Image, background Color, sc []Color, size, numWorkers
 	model.Score = differenceFull(model.Target, model.Current)
 	model.Context = model.newContext()
 	model.sc = sc
+	model.ModeArr = ModeArr
 	for i := 0; i < numWorkers; i++ {
-		worker := NewWorker(model.Target ,sc)
+		worker := NewWorker(model.Target ,sc, ModeArr)
 		model.Workers = append(model.Workers, worker)
 	}
 	return model

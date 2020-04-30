@@ -25,11 +25,13 @@ var (
 	Alpha      int
 	InputSize  int
 	OutputSize int
-	Mode       int
+	Mode	   int
+	ModeStr    string
 	Workers    int
 	Nth        int
 	Repeat     int
 	V, VV      bool
+	Shapes     string
 )
 
 type flagArray []string
@@ -71,13 +73,15 @@ func init() {
 	flag.IntVar(&Alpha, "a", 128, "alpha value")
 	flag.IntVar(&InputSize, "r", 256, "resize large input images to this size")
 	flag.IntVar(&OutputSize, "s", 1024, "output image size")
-	flag.IntVar(&Mode, "m", 1, "0=combo 1=triangle 2=rect 3=ellipse 4=circle 5=rotatedrect 6=beziers 7=rotatedellipse 8=polygon")
+	flag.StringVar(&ModeStr, "m","1", "0=combo 1=triangle 2=rect 3=ellipse 4=circle 5=rotatedrect 6=beziers 7=rotatedellipse 8=polygon comma sperate to combine specific modes")
 	flag.IntVar(&Workers, "j", 0, "number of parallel workers (default uses all cores)")
 	flag.IntVar(&Nth, "nth", 1, "save every Nth frame (put \"%d\" in path)")
 	flag.IntVar(&Repeat, "rep", 0, "add N extra shapes per iteration with reduced search")
 	flag.BoolVar(&V, "v", false, "verbose")
 	flag.BoolVar(&VV, "vv", false, "very verbose")
 }
+
+
 
 func errorMessage(message string) bool {
 	fmt.Fprintln(os.Stderr, message)
@@ -102,6 +106,25 @@ func main() {
 	}
 	if len(Configs) == 0 {
 		ok = errorMessage("ERROR: number argument required")
+	}
+	ModeStrArr := strings.Split(ModeStr, ",")
+	ModeArr := make([]int,len(ModeStrArr))
+	for i,v := range(ModeStrArr){
+		var err error
+		ModeArr[i] ,err = strconv.Atoi(v)
+		if(err != nil){
+			fmt.Printf("Mode must be a number or series of comma sperated numbers")
+			os.Exit(1)
+		}
+		if(len(ModeStrArr) > 1 &&(ModeArr[i] < 1 || ModeArr[i] > 8)){
+			fmt.Printf("Illegal mode: %d.", ModeArr[i])
+			os.Exit(1)
+		}
+	}
+	if(len(ModeArr) == 1){
+		Mode = ModeArr[0]
+	} else {
+		Mode = 0
 	}
 	if len(Configs) == 1 {
 		Configs[0].Mode = Mode
@@ -148,7 +171,7 @@ func main() {
 		input = resize.Thumbnail(size, size, input, resize.Bilinear)
 	}
 
-	// determine background color
+	//determine allowed shape colors
 	var sc  []primitive.Color
 	if ShapeColorsStr != "" {
 		var ShapeColorsStrAr = strings.Split(ShapeColorsStr, ",")
@@ -157,6 +180,7 @@ func main() {
 			sc[i] = primitive.MakeHexColor(v)
 		}
 	}
+	// determine background color
 	var bg primitive.Color
 	if Background == "" {
 		bg = primitive.MakeColor(primitive.AverageImageColor(input))
@@ -165,7 +189,7 @@ func main() {
 	}
 
 	// run algorithm
-	model := primitive.NewModel(input, bg, sc, OutputSize, Workers)
+	model := primitive.NewModel(input, bg, sc, OutputSize, Workers, ModeArr)
 	primitive.Log(1, "%d: t=%.3f, score=%.6f\n", 0, 0.0, model.Score)
 	start := time.Now()
 	frame := 0
