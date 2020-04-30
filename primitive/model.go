@@ -22,9 +22,10 @@ type Model struct {
 	Scores     []float64
 	Workers    []*Worker
 	ModeArr    []int
+	usSH	   []ShapeFactory
 }
 
-func NewModel(target image.Image, background Color, sc []Color, size, numWorkers int, ModeArr []int) *Model {
+func NewModel(target image.Image, background Color, sc []Color,usSH []ShapeFactory, size, numWorkers int, ModeArr []int) *Model {
 	w := target.Bounds().Size().X
 	h := target.Bounds().Size().Y
 	aspect := float64(w) / float64(h)
@@ -51,8 +52,9 @@ func NewModel(target image.Image, background Color, sc []Color, size, numWorkers
 	model.Context = model.newContext()
 	model.sc = sc
 	model.ModeArr = ModeArr
+	model.usSH = usSH
 	for i := 0; i < numWorkers; i++ {
-		worker := NewWorker(model.Target ,sc, ModeArr)
+		worker := NewWorker(model.Target ,sc, ModeArr,usSH)
 		model.Workers = append(model.Workers, worker)
 	}
 	return model

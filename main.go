@@ -32,6 +32,7 @@ var (
 	Repeat     int
 	V, VV      bool
 	Shapes     string
+	UserShapeFile string
 )
 
 type flagArray []string
@@ -73,12 +74,13 @@ func init() {
 	flag.IntVar(&Alpha, "a", 128, "alpha value")
 	flag.IntVar(&InputSize, "r", 256, "resize large input images to this size")
 	flag.IntVar(&OutputSize, "s", 1024, "output image size")
-	flag.StringVar(&ModeStr, "m","1", "0=combo 1=triangle 2=rect 3=ellipse 4=circle 5=rotatedrect 6=beziers 7=rotatedellipse 8=polygon comma sperate to combine specific modes")
+	flag.StringVar(&ModeStr, "m","1", "0=combo 1=triangle 2=rect 3=ellipse 4=circle 5=rotatedrect 6=beziers 7=rotatedellipse 8=polygon 9=use user defined shapes comma seperate to combine specific modes")
 	flag.IntVar(&Workers, "j", 0, "number of parallel workers (default uses all cores)")
 	flag.IntVar(&Nth, "nth", 1, "save every Nth frame (put \"%d\" in path)")
 	flag.IntVar(&Repeat, "rep", 0, "add N extra shapes per iteration with reduced search")
 	flag.BoolVar(&V, "v", false, "verbose")
 	flag.BoolVar(&VV, "vv", false, "very verbose")
+	flag.StringVar(&UserShapeFile,"userShapeFile","UserShapes.txt","File to read user defined shapes from. Default UserShapes.txt")
 }
 
 
@@ -107,6 +109,7 @@ func main() {
 	if len(Configs) == 0 {
 		ok = errorMessage("ERROR: number argument required")
 	}
+	useUserShapes := false
 	ModeStrArr := strings.Split(ModeStr, ",")
 	ModeArr := make([]int,len(ModeStrArr))
 	for i,v := range(ModeStrArr){
@@ -116,9 +119,12 @@ func main() {
 			fmt.Printf("Mode must be a number or series of comma sperated numbers")
 			os.Exit(1)
 		}
-		if(len(ModeStrArr) > 1 &&(ModeArr[i] < 1 || ModeArr[i] > 8)){
+		if(len(ModeStrArr) > 1 &&(ModeArr[i] < 1 || ModeArr[i] > 9)){
 			fmt.Printf("Illegal mode: %d.", ModeArr[i])
 			os.Exit(1)
+		}
+		if(ModeArr[i] == 9){
+			useUserShapes = true
 		}
 	}
 	if(len(ModeArr) == 1){
@@ -170,6 +176,16 @@ func main() {
 	if size > 0 {
 		input = resize.Thumbnail(size, size, input, resize.Bilinear)
 	}
+	//read user shape file
+	var userSh []primitive.ShapeFactory
+	if(useUserShapes){
+		shapeFile,err := os.Open(UserShapeFile)
+		if(err != nil){
+			fmt.Printf("Error opening user shape file: %s",err.Error())
+			os.Exit(1)
+		}
+		userSh = primitive.ParseShapesFile(shapeFile)
+	}
 
 	//determine allowed shape colors
 	var sc  []primitive.Color
@@ -189,7 +205,7 @@ func main() {
 	}
 
 	// run algorithm
-	model := primitive.NewModel(input, bg, sc, OutputSize, Workers, ModeArr)
+	model := primitive.NewModel(input, bg, sc, userSh, OutputSize, Workers, ModeArr)
 	primitive.Log(1, "%d: t=%.3f, score=%.6f\n", 0, 0.0, model.Score)
 	start := time.Now()
 	frame := 0

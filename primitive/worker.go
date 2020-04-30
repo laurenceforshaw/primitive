@@ -21,9 +21,10 @@ type Worker struct {
 	Counter    int
 	sc         []Color
 	ModeArr    []int
+	usSH	   []ShapeFactory
 }
 
-func NewWorker(target *image.RGBA,sc []Color, ModeArr []int)*Worker {
+func NewWorker(target *image.RGBA,sc []Color, ModeArr []int,usSH []ShapeFactory)*Worker {
 	w := target.Bounds().Size().X
 	h := target.Bounds().Size().Y
 	worker := Worker{}
@@ -37,6 +38,7 @@ func NewWorker(target *image.RGBA,sc []Color, ModeArr []int)*Worker {
 	worker.Rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
 	worker.sc = sc
 	worker.ModeArr = ModeArr
+	worker.usSH = usSH
 	return &worker
 }
 
@@ -108,7 +110,13 @@ func (worker *Worker) RandomState(t ShapeType, a int) *State {
 		return NewState(worker, NewRandomRotatedEllipse(worker), a)
 	case ShapeTypePolygon:
 		return NewState(worker, NewRandomPolygon(worker, 4, false), a)
+	case ShapeTypeUserDefined:
+		return NewState(worker, worker.NewRandomUserDefinedShape(),a)
 	}
+}
+
+func(worker *Worker) NewRandomUserDefinedShape() Shape {
+	return worker.usSH[worker.Rnd.Intn(len(worker.usSH))].NewShape(worker)
 }
 
 //Gets a mode from all modes or the allowed mode array
@@ -119,3 +127,5 @@ func(worker *Worker) RandomMode() int {
 		return worker.Rnd.Intn(8) + 1
 	}
 }
+
+
