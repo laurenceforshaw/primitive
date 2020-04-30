@@ -31,12 +31,14 @@ func ParseShapesFile(reader io.Reader) []ShapeFactory{
 		success := scanner.Scan()
 		if success{
 			sp := strings.Split(scanner.Text(),",")
-			switch sp[0]{
+			switch sp[0] {
 			default:
-				fmt.Printf("Error reading user shape file: Illegal shape name :%v",sp[0])
+				fmt.Printf("Error reading user shape file: Illegal shape name :%v", sp[0])
 				os.Exit(1)
 			case "FlexPoly":
-				res = append(res,ParseFlexPoly(sp))
+				res = append(res, ParseFlexPoly(sp))
+			case "RigidPoly":
+				res = append(res, ParseRigidPoly(sp))
 			}
 		} else {
 			err := scanner.Err()
