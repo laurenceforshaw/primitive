@@ -2,6 +2,7 @@ package primitive
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -13,12 +14,14 @@ import (
 type RigidPolygonFactory struct{
 	Order int
 	X, Y []float64
+	Radius float64
 }
 
 func(fact *RigidPolygonFactory) NewShape(worker *Worker) Shape{
-	return NewRandomRigidPolygon(worker,fact.Order,false)
+	return NewRandomRigidPolygon(worker,fact)
 }
 
+//parse a rigid polygon line
 func ParseRigidPoly(sp []string) ShapeFactory{
 	if(len(sp) == 1){
 		fmt.Printf("Error reading user shape file: RigidPoly requires at least 2 arguments")
@@ -39,6 +42,7 @@ func ParseRigidPoly(sp []string) ShapeFactory{
 	}
 	X := make([]float64,order)
 	Y := make([]float64,order)
+	Radius := 0.0
 	for i := 0 ;i < order; i++ {
 		X[i], err = strconv.ParseFloat(sp[2*i + 2],64)
 		if(err != nil){
@@ -50,31 +54,49 @@ func ParseRigidPoly(sp []string) ShapeFactory{
 			fmt.Printf("Error reading user shape file: %s",err.Error())
 			os.Exit(1)
 		}
+		Radius = math.Max(Radius, math.Sqrt(X[i]*X[i] + Y[i]*Y[i]))
 	}
-	res := RigidPolygonFactory{order,X,Y}
+	res := RigidPolygonFactory{order,X,Y,Radius}
 	return &res
 }
 
 type RigidPolygon struct {
+	Parent *RigidPolygonFactory
 	Worker *Worker
 	Order  int
-	Convex bool
 	X, Y   []float64
+	RootX, RootY float64
+	MaxScale float64
+	Scale float64
+	Angle float64
 }
 
-func NewRandomRigidPolygon(worker *Worker, order int, convex bool) *RigidPolygon {
+func NewRandomRigidPolygon(worker *Worker, parent *RigidPolygonFactory) *RigidPolygon {
 	rnd := worker.Rnd
+	order := parent.Order
 	x := make([]float64, order)
 	y := make([]float64, order)
-	x[0] = rnd.Float64() * float64(worker.W)
-	y[0] = rnd.Float64() * float64(worker.H)
+	RootX := rnd.Float64() * float64(worker.W)
+	RootY := rnd.Float64() * float64(worker.H)
+	MaxScale := math.Sqrt(float64(worker.W*worker.W + worker.H*worker.H))/parent.Radius
+	Scale := rnd.Float64()*0.1*MaxScale
+	Angle := rnd.Float64()*2*math.Pi
 	for i := 1; i < order; i++ {
 		x[i] = x[0] + rnd.Float64()*40 - 20
 		y[i] = y[0] + rnd.Float64()*40 - 20
 	}
-	p := &RigidPolygon{worker, order, convex, x, y}
+	p := &RigidPolygon{parent,worker, order, x, y,RootX,RootY,MaxScale,Scale,Angle}
+	p.Derive()
 	p.Mutate()
 	return p
+}
+
+//Get the vertex locations from the scale and angle
+func (p *RigidPolygon) Derive(){
+	for i := 0;i <p.Order;i++{
+		p.X[i] = p.RootX + math.Cos(p.Angle)*p.Parent.X[i] - math.Sin(p.Angle)*p.Parent.Y[i]
+		p.Y[i] = p.RootY + math.Cos(p.Angle)*p.Parent.Y[i] + math.Sin(p.Angle)*p.Parent.X[i]
+	}
 }
 
 func (p *RigidPolygon) Draw(dc *gg.Context, scale float64) {
@@ -129,21 +151,6 @@ func (p *RigidPolygon) Mutate() {
 }
 
 func (p *RigidPolygon) Valid() bool {
-	if !p.Convex {
-		return true
-	}
-	var sign bool
-	for a := 0; a < p.Order; a++ {
-		i := (a + 0) % p.Order
-		j := (a + 1) % p.Order
-		k := (a + 2) % p.Order
-		c := cross3(p.X[i], p.Y[i], p.X[j], p.Y[j], p.X[k], p.Y[k])
-		if a == 0 {
-			sign = c > 0
-		} else if c > 0 != sign {
-			return false
-		}
-	}
 	return true
 }
 
