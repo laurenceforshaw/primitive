@@ -18,11 +18,14 @@ type Model struct {
 	Score      float64
 	Shapes     []Shape
 	Colors     []Color
+	sc		   []Color
 	Scores     []float64
 	Workers    []*Worker
+	ModeArr    []int
+	usSH	   []ShapeFactory
 }
 
-func NewModel(target image.Image, background Color, size, numWorkers int) *Model {
+func NewModel(target image.Image, background Color, sc []Color,usSH []ShapeFactory, size, numWorkers int, ModeArr []int) *Model {
 	w := target.Bounds().Size().X
 	h := target.Bounds().Size().Y
 	aspect := float64(w) / float64(h)
@@ -47,8 +50,11 @@ func NewModel(target image.Image, background Color, size, numWorkers int) *Model
 	model.Current = uniformRGBA(target.Bounds(), background.NRGBA())
 	model.Score = differenceFull(model.Target, model.Current)
 	model.Context = model.newContext()
+	model.sc = sc
+	model.ModeArr = ModeArr
+	model.usSH = usSH
 	for i := 0; i < numWorkers; i++ {
-		worker := NewWorker(model.Target)
+		worker := NewWorker(model.Target ,sc, ModeArr,usSH)
 		model.Workers = append(model.Workers, worker)
 	}
 	return model
@@ -103,7 +109,7 @@ func (model *Model) SVG() string {
 func (model *Model) Add(shape Shape, alpha int) {
 	before := copyRGBA(model.Current)
 	lines := shape.Rasterize()
-	color := computeColor(model.Target, model.Current, lines, alpha)
+	color := computeColor(model.Target, model.Current, lines, alpha,model.sc)
 	drawLines(model.Current, color, lines)
 	score := differencePartial(model.Target, before, model.Current, model.Score, lines)
 

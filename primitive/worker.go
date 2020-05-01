@@ -19,9 +19,12 @@ type Worker struct {
 	Rnd        *rand.Rand
 	Score      float64
 	Counter    int
+	sc         []Color
+	ModeArr    []int
+	usSH	   []ShapeFactory
 }
 
-func NewWorker(target *image.RGBA) *Worker {
+func NewWorker(target *image.RGBA,sc []Color, ModeArr []int,usSH []ShapeFactory)*Worker {
 	w := target.Bounds().Size().X
 	h := target.Bounds().Size().Y
 	worker := Worker{}
@@ -33,6 +36,9 @@ func NewWorker(target *image.RGBA) *Worker {
 	worker.Lines = make([]Scanline, 0, 4096) // TODO: based on height
 	worker.Heatmap = NewHeatmap(w, h)
 	worker.Rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
+	worker.sc = sc
+	worker.ModeArr = ModeArr
+	worker.usSH = usSH
 	return &worker
 }
 
@@ -47,7 +53,7 @@ func (worker *Worker) Energy(shape Shape, alpha int) float64 {
 	worker.Counter++
 	lines := shape.Rasterize()
 	// worker.Heatmap.Add(lines)
-	color := computeColor(worker.Target, worker.Current, lines, alpha)
+	color := computeColor(worker.Target, worker.Current, lines, alpha ,worker.sc)
 	copyLines(worker.Buffer, worker.Current, lines)
 	drawLines(worker.Buffer, color, lines)
 	return differencePartial(worker.Target, worker.Current, worker.Buffer, worker.Score, lines)
@@ -87,7 +93,7 @@ func (worker *Worker) BestRandomState(t ShapeType, a, n int) *State {
 func (worker *Worker) RandomState(t ShapeType, a int) *State {
 	switch t {
 	default:
-		return worker.RandomState(ShapeType(worker.Rnd.Intn(8)+1), a)
+		return worker.RandomState(ShapeType(worker.RandomMode()), a)
 	case ShapeTypeTriangle:
 		return NewState(worker, NewRandomTriangle(worker), a)
 	case ShapeTypeRectangle:
@@ -104,5 +110,22 @@ func (worker *Worker) RandomState(t ShapeType, a int) *State {
 		return NewState(worker, NewRandomRotatedEllipse(worker), a)
 	case ShapeTypePolygon:
 		return NewState(worker, NewRandomPolygon(worker, 4, false), a)
+	case ShapeTypeUserDefined:
+		return NewState(worker, worker.NewRandomUserDefinedShape(),a)
 	}
 }
+
+func(worker *Worker) NewRandomUserDefinedShape() Shape {
+	return worker.usSH[worker.Rnd.Intn(len(worker.usSH))].NewShape(worker)
+}
+
+//Gets a mode from all modes or the allowed mode array
+func(worker *Worker) RandomMode() int {
+	if(len(worker.ModeArr) > 1){
+		return worker.ModeArr[worker.Rnd.Intn(len(worker.ModeArr))]
+	} else{
+		return worker.Rnd.Intn(8) + 1
+	}
+}
+
+

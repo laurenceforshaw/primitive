@@ -13,7 +13,7 @@ type Triangle struct {
 	X2, Y2 int
 	X3, Y3 int
 }
-
+//Generates a new trianlge with at least one vertex in the image and the other vertices in 30 by 30 triangle around it.
 func NewRandomTriangle(worker *Worker) *Triangle {
 	rnd := worker.Rnd
 	x1 := rnd.Intn(worker.W)
@@ -27,6 +27,7 @@ func NewRandomTriangle(worker *Worker) *Triangle {
 	return t
 }
 
+//draws the lines
 func (t *Triangle) Draw(dc *gg.Context, scale float64) {
 	dc.LineTo(float64(t.X1), float64(t.Y1))
 	dc.LineTo(float64(t.X2), float64(t.Y2))
@@ -35,6 +36,7 @@ func (t *Triangle) Draw(dc *gg.Context, scale float64) {
 	dc.Fill()
 }
 
+//converts to listing of vertices.
 func (t *Triangle) SVG(attrs string) string {
 	return fmt.Sprintf(
 		"<polygon %s points=\"%d,%d %d,%d %d,%d\" />",
@@ -46,6 +48,8 @@ func (t *Triangle) Copy() Shape {
 	return &a
 }
 
+
+//randomly moves a single vertex in 16*16 square
 func (t *Triangle) Mutate() {
 	w := t.Worker.W
 	h := t.Worker.H
@@ -69,6 +73,8 @@ func (t *Triangle) Mutate() {
 	}
 }
 
+
+//checks each angle at least 15 degrees
 func (t *Triangle) Valid() bool {
 	const minDegrees = 15
 	var a1, a2, a3 float64
@@ -102,12 +108,14 @@ func (t *Triangle) Valid() bool {
 	return a1 > minDegrees && a2 > minDegrees && a3 > minDegrees
 }
 
+//rasterizes the triangle
 func (t *Triangle) Rasterize() []Scanline {
 	buf := t.Worker.Lines[:0]
 	lines := rasterizeTriangle(t.X1, t.Y1, t.X2, t.Y2, t.X3, t.Y3, buf)
 	return cropScanlines(lines, t.Worker.W, t.Worker.H)
 }
 
+//rasterizes the triangle
 func rasterizeTriangle(x1, y1, x2, y2, x3, y3 int, buf []Scanline) []Scanline {
 	if y1 > y3 {
 		x1, x3 = x3, x1
