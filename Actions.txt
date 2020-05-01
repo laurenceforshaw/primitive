@@ -1,0 +1,31 @@
+Establish forked repository. Started 2/19 Closed 2/26
+
+Create a list of user stories file Started 2/19 Closed 2/26
+
+Get Fogelman shapes working on home computer started 2/26 closed 3/6
+
+Review code and diagram how it works started 3/6 closed 4/23
+
+Get Fogelman shapes working and debug-able with go eclipse started 3/6 closed 4/9 (failed due to repeated unresolvable errors)
+
+Get fogelman shapes working and debug-able with liteide started 4/9 closed 4/14 (failed)
+
+Get fogelman shapes working and debugable with goland started 4/14 closed 4/14
+
+Implement user selection of colors. Started 4/14 closed 4/26
+
+Implement user selection of shapes started 4/14 closed 4/28
+
+Implement a user defined arbitrary numbered polygon shape for users Started 4/14 closed 4/28
+
+Implement a user defined rigid polygon shape Started 4/14 closed 4/29
+
+Review and upload minutes Started 4/14 closed 4/30
+
+Implement reading user selected colors from a shape file. Started 4/30
+
+Upload documentation for all analyzed or written functions started 4/30
+
+Analyze effects of new shapes  on image quality. Started 4/30
+
+Summarize and upload test results. Started 4/30
