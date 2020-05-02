@@ -3,7 +3,6 @@ package primitive
 import (
 	"fmt"
 	"math"
-	"os"
 	"strconv"
 	"strings"
 
@@ -22,23 +21,19 @@ func(fact *RigidPolygonFactory) NewShape(worker *Worker) Shape{
 }
 
 //parse a rigid polygon line
-func ParseRigidPoly(sp []string) ShapeFactory{
+func ParseRigidPoly(sp []string) (ShapeFactory,error){
 	if(len(sp) == 1){
-		fmt.Printf("Error reading user shape file: RigidPoly requires at least 2 arguments")
-		os.Exit(1)
+		return nil, fmt.Errorf("RigidPoly requires at least 2 arguments")
 	}
 	order,err := strconv.Atoi(sp[1])
 	if(err != nil){
-		fmt.Printf("Error reading user shape file: %s",err.Error())
-		os.Exit(1)
+		return nil,err
 	}
 	if(order < 3){
-		fmt.Printf("Error reading user shape file: A polygon must have at least 3 sides.")
-		os.Exit(1)
+		return nil, fmt.Errorf("A polygon must have at least 3 sides.")
 	}
 	if(len(sp) != order*2 + 2){
-		fmt.Printf("Error reading user shape file: RigidPoly requires 2 arguments after the first two per vertex")
-		os.Exit(1)
+		return nil, fmt.Errorf("RigidPoly requires 2 arguments after the first two per vertex")
 	}
 	X := make([]float64,order)
 	Y := make([]float64,order)
@@ -46,18 +41,16 @@ func ParseRigidPoly(sp []string) ShapeFactory{
 	for i := 0 ;i < order; i++ {
 		X[i], err = strconv.ParseFloat(sp[2*i + 2],64)
 		if(err != nil){
-			fmt.Printf("Error reading user shape file: %s",err.Error())
-			os.Exit(1)
+			return nil ,fmt.Errorf("Error reading user shape file: %s",err.Error())
 		}
 		Y[i], err = strconv.ParseFloat(sp[2*i + 3],64)
 		if(err != nil){
-			fmt.Printf("Error reading user shape file: %s",err.Error())
-			os.Exit(1)
+			return nil, fmt.Errorf("Error reading user shape file: %s",err.Error())
 		}
 		Radius = math.Max(Radius, math.Sqrt(X[i]*X[i] + Y[i]*Y[i]))
 	}
 	res := RigidPolygonFactory{order,X,Y,Radius}
-	return &res
+	return &res, nil
 }
 
 type RigidPolygon struct {

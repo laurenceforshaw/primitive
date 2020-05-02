@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -22,8 +21,8 @@ func(fact *FlexPolyFactory) NewShape(worker *Worker) Shape{
 	return NewRandomPolygon(worker,fact.n,false)
 }
 
-//This pares a user shapes file
-func ParseShapesFile(reader io.Reader) []ShapeFactory{
+//This parses a user shapes file
+func ParseShapesFile(reader io.Reader) ([]ShapeFactory, error){
 	scanner := bufio.NewScanner(reader)
 	var res []ShapeFactory
 	cont := true
@@ -33,47 +32,49 @@ func ParseShapesFile(reader io.Reader) []ShapeFactory{
 			sp := strings.Split(scanner.Text(),",")
 			switch sp[0] {
 			default:
-				fmt.Printf("Error reading user shape file: Illegal shape name :%v", sp[0])
-				os.Exit(1)
+				return nil,fmt.Errorf("Illegal shape name: %v", sp[0])
 			case "FlexPoly":
-				res = append(res, ParseFlexPoly(sp))
+				next,err := ParseFlexPoly(sp)
+				if (err != nil){
+					return nil,err
+				}
+				res = append(res, next)
 			case "RigidPoly":
-				res = append(res, ParseRigidPoly(sp))
+				next,err := ParseRigidPoly(sp)
+				if (err != nil){
+					return nil,err
+				}
+				res = append(res, next)
 			}
 		} else {
 			err := scanner.Err()
 			if(err == nil){
 				cont = false
 			}else{
-				fmt.Printf("Error reading user shape file: %s",err.Error())
-				os.Exit(1)
+				return nil,err
 			}
 		}
 	}
 	if(len(res) == 0){
-		fmt.Printf("Error reading user shape file: at least one shape must be specified")
-		os.Exit(1)
+		return nil, fmt.Errorf("at least one shape must be specified")
 	}
-	return res
+	return res,nil
 }
 
 //parse a flexible polygon creator from a seperated line
-func ParseFlexPoly(sp []string) ShapeFactory{
+func ParseFlexPoly(sp []string) (ShapeFactory,error){
 
 	if(len(sp) != 2){
-		fmt.Printf("Error reading user shape file: FlexPoly requires 2 arguments")
-		os.Exit(1)
+		return nil, fmt.Errorf("FlexPoly requires 2 arguments")
 	}
 	s,err := strconv.Atoi(sp[1])
 	if(err != nil){
-		fmt.Printf("Error reading user shape file: %s",err.Error())
-		os.Exit(1)
+		return nil,err
 	}
 	if(s < 3){
-		fmt.Printf("Error reading user shape file: A polygon must have at least 3 sides.")
-		os.Exit(1)
+		return nil, fmt.Errorf("A polygon must have at least 3 sides.")
 	}
 	ret := FlexPolyFactory{s}
-	return &ret
+	return &ret,nil
 
 }
