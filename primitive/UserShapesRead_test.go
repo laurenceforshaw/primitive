@@ -27,7 +27,7 @@ func TestEmptyShapeFile(t *testing.T){
 	PSFErrTest(t,"","at least one shape must be specified")
 }
 
-func Equal(a, b []float64) bool {
+func FloatEqual(a, b []float64) bool {
 	if len(a) != len(b) {
 		return false
 	}
@@ -52,7 +52,7 @@ func TestShapeFileGood(t *testing.T){
 		if (rigid.Order != 3){
 			t.Errorf("RigidPolygon side number should be 3")
 		}
-		if (!Equal(rigid.X,[]float64{0.0,0.0,1.0}) || !Equal(rigid.X,[]float64{0.0,0.0,1.0})){
+		if (!FloatEqual(rigid.X,[]float64{0.0,0.0,1.0}) || !FloatEqual(rigid.X,[]float64{0.0,0.0,1.0})){
 			t.Errorf("Bad rigid poly point locations")
 		}
 	}
