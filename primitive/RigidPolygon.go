@@ -41,11 +41,11 @@ func ParseRigidPoly(sp []string) (ShapeFactory,error){
 	for i := 0 ;i < order; i++ {
 		X[i], err = strconv.ParseFloat(sp[2*i + 2],64)
 		if(err != nil){
-			return nil ,fmt.Errorf("Error reading user shape file: %s",err.Error())
+			return nil ,fmt.Errorf(err.Error())
 		}
 		Y[i], err = strconv.ParseFloat(sp[2*i + 3],64)
 		if(err != nil){
-			return nil, fmt.Errorf("Error reading user shape file: %s",err.Error())
+			return nil, fmt.Errorf(err.Error())
 		}
 		Radius = math.Max(Radius, math.Sqrt(X[i]*X[i] + Y[i]*Y[i]))
 	}
