@@ -1,0 +1,1 @@
+In addition to the automatic tests all new setting as well as several representative values form old settings were tried on a sample image. Visual inspection confirmed the program was attempting to match to the image.
