@@ -41,9 +41,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a491282-9762-4a20-973c-e5d93f30e199" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/primitive/AltShapes_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/primitive/FixedColors_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go_build_main_go.exe" beforeDir="false" afterPath="$PROJECT_DIR$/go_build_main_go.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/out.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/primitive/core.go" beforeDir="false" afterPath="$PROJECT_DIR$/primitive/core.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,10 +82,21 @@
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
       <module name="primitive" />
       <working_directory value="$PROJECT_DIR$" />
-      <parameters value="-i IMG_0323.JPG -o out.jpg -n 300 -m 9" />
+      <parameters value="-i IMG_0323.JPG -o out.jpg -n 300 -m 1 -bg #000000" />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/main.go" />
       <output_directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="FixedColors_test.go" type="GoTestRunConfiguration" factoryName="Go Test" nameIsGenerated="true">
+      <module name="primitive" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/laurenceforshaw/primitive" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/primitive/FixedColors_test.go" />
       <method v="2" />
     </configuration>
     <configuration name="go test primitive" type="GoTestRunConfiguration" factoryName="Go Test" nameIsGenerated="true">
@@ -99,6 +112,7 @@
     </configuration>
     <list>
       <item itemvalue="Go Build.go build main.go" />
+      <item itemvalue="Go Test.FixedColors_test.go" />
       <item itemvalue="Go Test.go test primitive" />
     </list>
   </component>
@@ -128,10 +142,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588434753112">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588468406554">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588434753112" />
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588468406554" />
     <state x="669" y="146" key="#go_build_main.go" timestamp="1587853356397">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -140,38 +154,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="739" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1587853355068" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1588461454370">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1588469138355">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588461454370" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1588461454370">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588469138355" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1588469138355">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588461454370" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1588461454370">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588469138355" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1588469138355">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588461454370" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1588461454370">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588469138355" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1588469138355">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588461454370" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1588459680147">
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588469138355" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1588468575986">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588459680147" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1588459680147">
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588468575986" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1588468575986">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588459680147" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1588459680147">
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588468575986" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1588468575986">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588459680147" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1588459680147">
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588468575986" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1588468575986">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588459680147" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588468575986" />
+    <state x="565" y="130" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588466831742">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="565" y="130" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1588466831742" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -33,7 +33,7 @@ func computeColor(target, current *image.RGBA, lines []Scanline, alpha int, sc [
 	r := natr
 	g := natg
 	b := natb
-	dist := 255*255*3 + 1
+	dist := 255*255*3 + 255
 	if(len(sc) >0){
 		for i,v := range(sc){
 			bob := i
