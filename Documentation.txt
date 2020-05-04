@@ -1,0 +1,1 @@
+Doxygen does appear to be compatible with go by default.  Go ducumenation tools should produce appropriate documentation.

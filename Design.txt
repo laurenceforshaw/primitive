@@ -1,0 +1,5 @@
+Design of user selected is too use existing color calculation then change to the nearest user allowed by euclidean distance before calculating score.
+
+Desing of polygons with user specified number sides is use the existing polygon object.
+
+Design of user specified rigid polygons is to create an altered copy of the existing polygon object that calculates vertices based on randomized translate rotate and scale values.
