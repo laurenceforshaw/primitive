@@ -42,9 +42,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0a491282-9762-4a20-973c-e5d93f30e199" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go_build_main_go.exe" beforeDir="false" afterPath="$PROJECT_DIR$/go_build_main_go.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/out.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out_0.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/out_0.jpg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,11 +74,11 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go">
+  <component name="RunManager" selected="Go Test.go test primitive">
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
       <module name="primitive" />
       <working_directory value="$PROJECT_DIR$" />
-      <parameters value="-i IMG_0323.JPG -o out_0_2000_RGBW.jpg -n 2000 -m 0 -v -col #FF0000,#00FF00,#0000FF,#FFFFFF" />
+      <parameters value="-i IMG_0323.JPG -o out.gif -n 2000 -m 0 " />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/main.go" />
       <output_directory value="$PROJECT_DIR$" />
@@ -141,10 +138,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588539006110">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588560511977">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588539006110" />
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588560511977" />
     <state x="669" y="146" key="#go_build_main.go" timestamp="1587853356397">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -153,22 +150,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="739" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1587853355068" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1588539009811">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1588564339350">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588539009811" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1588539009810">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588564339350" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1588564339349">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588539009810" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1588539009810">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588564339349" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1588564339349">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588539009810" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1588539009811">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588564339349" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1588564339350">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588539009811" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588564339350" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1588538333591">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -208,6 +205,6 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/primitive$go_test_primitive.out" NAME="go test primitive Coverage Results" MODIFIED="1588470943530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/primitive$go_test_primitive.out" NAME="go test primitive Coverage Results" MODIFIED="1588564330409" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

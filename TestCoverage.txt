@@ -1,1 +1,1 @@
-Coverage tool indicates the 35.8% of statements in the primitve are covered by tests. This is suboptimal, no statements were covered by tests previously and testing the full code was beyond the scope of my project.
+Coverage tool indicates the 35.8% of statements in the primitve are covered by tests. This is suboptimal, no statements were covered by tests previously and testing the full code was beyond the scope of my project. I confirmed that all of the code I wrote was covered.
